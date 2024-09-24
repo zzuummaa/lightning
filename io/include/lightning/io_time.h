@@ -1,6 +1,5 @@
 #pragma once
 
-#include <lightning/observer_ptr.h>
 #include <lightning/time.h>
 
 #include <coroutine>

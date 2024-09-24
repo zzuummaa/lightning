@@ -1,4 +1,4 @@
-#include <lightning/io/io_context.h>
+#include <lightning/io_context.h>
 #include <lightning/exception.h>
 
 #include <unistd.h>

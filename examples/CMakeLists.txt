@@ -1,7 +1,7 @@
 add_executable(printer printer.cpp)
-target_link_libraries(printer lightning)
+target_link_libraries(printer lightning_base)
 
 add_executable(periodic_printer periodic_printer.cpp)
-target_link_libraries(periodic_printer lightning)
+target_link_libraries(periodic_printer lightning_io)
 
 add_executable(timefd_signalfd_epoll timefd_signalfd_epoll.cpp)

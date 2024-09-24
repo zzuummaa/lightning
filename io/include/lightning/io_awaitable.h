@@ -2,8 +2,8 @@
 
 #include <lightning/awaitable.h>
 
-#include <lightning/io/io_context.h>
-#include <lightning/io/io_time.h>
+#include <lightning/io_context.h>
+#include <lightning/io_time.h>
 
 namespace lightning
 {

@@ -1,6 +1,6 @@
 #include <lightning/async_task.h>
-#include <lightning/io/io_context.h>
-#include <lightning/io/io_awaitable.h>
+#include <lightning/io_context.h>
+#include <lightning/io_awaitable.h>
 
 #include <iostream>
 

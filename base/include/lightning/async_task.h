@@ -1,6 +1,7 @@
 #pragma once
 
-#include "lightning/awaitable.h"
+#include <lightning/observer_ptr.h>
+#include <lightning/awaitable.h>
 
 #include <coroutine>
 #include <utility>
@@ -9,6 +10,7 @@ namespace lightning
 {
 
 struct dummy_context {};
+inline thread_local dummy_context dummy_context_;
 
 template<typename _context>
 struct promise;
@@ -34,8 +36,8 @@ struct promise
 {
     using context_type = _context;
 
-    // allow default constructor for promise<dummy_context>
-    explicit promise(std::enable_if_t<std::is_same_v<_context, dummy_context>, dummy_context> context = dummy_context{}) : context_(context) {}
+    template<typename context_type = _context, std::enable_if_t<std::is_same_v<dummy_context, context_type>, bool> = true>
+    explicit promise() : context_(dummy_context_) { }
 
     explicit promise(context_type& context) : context_(context) {}
 
