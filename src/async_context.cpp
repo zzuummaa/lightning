@@ -1,4 +1,4 @@
-#include <lightning/async_context.h>
+#include <lightning/io/io_context.h>
 #include <lightning/exception.h>
 
 #include <unistd.h>
@@ -7,7 +7,7 @@
 namespace lightning
 {
 
-struct async_context::pimpl
+struct io_context::pimpl
 {
     int handle_;
     std::vector<epoll_event> events_;
@@ -15,7 +15,7 @@ struct async_context::pimpl
     pimpl(int handle, size_t capacity) : handle_(handle), events_(capacity) {}
 };
 
-async_context::async_context(size_t capacity)
+io_context::io_context(size_t capacity)
     : impl_(
         std::make_unique<pimpl>(
             expect_posix_ok(::epoll_create1(EPOLL_CLOEXEC)),
@@ -26,13 +26,13 @@ async_context::async_context(size_t capacity)
 
 }
 
-async_context::~async_context()
+io_context::~io_context()
 {
     ::close(impl_->handle_);
 }
 
 
-void async_context::registerHandle(int handle, std::coroutine_handle<> coro_handle)
+void io_context::registerHandle(int handle, std::coroutine_handle<> coro_handle)
 {
     epoll_event ev =
     {
@@ -44,7 +44,7 @@ void async_context::registerHandle(int handle, std::coroutine_handle<> coro_hand
     expect(callbacks.try_emplace(handle, coro_handle).second);
 }
 
- void async_context::poll(int timeout_ms)
+ void io_context::poll(int timeout_ms)
 {
     int count = expect_posix_ok(::epoll_wait(impl_->handle_, impl_->events_.data(), impl_->events_.size(), timeout_ms));
     for (int i = 0; i < count; ++i)

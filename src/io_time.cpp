@@ -1,5 +1,5 @@
-#include <lightning/time.h>
 #include <lightning/exception.h>
+#include <lightning/io/io_time.h>
 
 #include <unistd.h>
 #include <sys/timerfd.h>

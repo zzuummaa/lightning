@@ -1,23 +1,23 @@
 #include <lightning/async_task.h>
-#include <lightning/async_context.h>
-#include <lightning/time.h>
+#include <lightning/io/io_context.h>
+#include <lightning/io/io_awaitable.h>
 
 #include <iostream>
 
 using namespace lightning;
 
-async_task<> periodic_printer(async_context& context)
+async_task<io_context> periodic_printer(io_context&)
 {
     while (true)
     {
-        std::cout << "Hello, World!" << std::endl;
-        co_await delay_for(context, std::chrono::seconds(1));
+        std::cout << std::chrono::system_clock::now() << ": Hello, World!" << std::endl;
+        co_await delay_for(std::chrono::seconds(1));
     }
 }
 
 int main()
 {
-    async_context context(2);
+    io_context context(2);
 
     // Create coroutine in resume state, do first print
     auto task = periodic_printer(context);

@@ -7,10 +7,13 @@
 namespace lightning
 {
 
-struct async_context
+struct io_awaitable_factory;
+
+struct io_context
 {
-    explicit async_context(size_t capacity);
-    ~async_context();
+
+    explicit io_context(size_t capacity);
+    ~io_context();
 
     template<typename SystemAwaitable>
     void registerAwaitable(SystemAwaitable& awaitable)

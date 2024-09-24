@@ -5,9 +5,10 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_library(lightning
     src/lightning.cpp
-        src/async_context.cpp
+    src/async_context.cpp
     src/exception.cpp
-    src/time.cpp)
+    src/io_time.cpp
+)
 
 target_include_directories(lightning PUBLIC include)
 
