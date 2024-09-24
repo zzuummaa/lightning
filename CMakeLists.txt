@@ -3,6 +3,12 @@ project(lightning)
 
 set(CMAKE_CXX_STANDARD 20)
 
+find_package(OpenGL)
+find_package(GLUT)
+
 add_subdirectory(base)
 add_subdirectory(io)
-add_subdirectory(examples)
+
+if (OPENGL_FOUND AND GLUT_FOUND)
+    add_subdirectory(gl)
+endif()

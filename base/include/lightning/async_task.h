@@ -1,6 +1,5 @@
 #pragma once
 
-#include <lightning/observer_ptr.h>
 #include <lightning/awaitable.h>
 
 #include <coroutine>
@@ -36,8 +35,11 @@ struct promise
 {
     using context_type = _context;
 
-    template<typename context_type = _context, std::enable_if_t<std::is_same_v<dummy_context, context_type>, bool> = true>
-    explicit promise() : context_(dummy_context_) { }
+    template<
+        typename context_type = _context,
+        std::enable_if_t<std::is_same_v<dummy_context, context_type>, bool> = true
+    >
+    explicit promise(context_type& context = dummy_context_) : context_(context) { }
 
     explicit promise(context_type& context) : context_(context) {}
 

@@ -5,3 +5,5 @@ add_library(lightning_io
 
 target_link_libraries(lightning_io PUBLIC lightning_base)
 target_include_directories(lightning_io PUBLIC include)
+
+add_subdirectory(examples)

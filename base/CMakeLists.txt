@@ -3,3 +3,5 @@ add_library(lightning_base
 )
 
 target_include_directories(lightning_base PUBLIC include)
+
+add_subdirectory(examples)
