@@ -14,12 +14,12 @@ struct io_context
     ~io_context();
 
     template<typename SystemAwaitable>
-    void registerAwaitable(SystemAwaitable& awaitable)
+    void register_awaitable(SystemAwaitable& awaitable)
     {
         registerHandle(awaitable.handle(), awaitable.coro_handle());
     }
 
-    void registerHandle(int handle, std::coroutine_handle<> coro_handle);
+    void register_handle(int handle, std::coroutine_handle<> coro_handle);
 
     void poll(int timeout_ms);
 

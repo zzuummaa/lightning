@@ -32,7 +32,7 @@ io_context::~io_context()
 }
 
 
-void io_context::registerHandle(int handle, std::coroutine_handle<> coro_handle)
+void io_context::register_handle(int handle, std::coroutine_handle<> coro_handle)
 {
     epoll_event ev =
     {

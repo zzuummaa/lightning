@@ -1,9 +1,10 @@
 #include <lightning/gl_window.h>
+#include <lightning/gl_context.h>
 #include <lightning/exception.h>
 
 #include <lightning/opengl/glut.h>
 
-#include <map>
+#include <unordered_map>
 #include <mutex>
 
 namespace lightning
@@ -15,7 +16,7 @@ void gl_init(int* argc, char** argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 }
 
-static thread_local std::map<int, gl_window*> windows;
+static thread_local std::unordered_map<int, gl_window*> windows;
 
 void gl_window::on_display()
 {
@@ -23,9 +24,12 @@ void gl_window::on_display()
     gl_window* window = expect(windows.find(handle), std::end(windows), std::not_equal_to{})->second;
 
     // TODO paint surface
+
 }
 
-gl_window::gl_window(const gl_rect& dims, const char* title)
+gl_window::gl_window(
+    const gl_rect& dims, const char* title, gl_context& context)
+    : context_(context)
 {
     glutInitWindowPosition(dims.pos.x, dims.pos.y);
     glutInitWindowSize(dims.size.width, dims.size.height);
