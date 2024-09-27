@@ -17,16 +17,9 @@ struct gl_window
 
     ~gl_window();
 
-    template<typename _surface>
-    void set_surface(_surface&& surface)
-    {
-        surface_ = std::forward<_surface>(surface);
-    }
+    void set_surface(const surface_type& surface);
 
-    surface_type& get_surface()
-    {
-        return surface_;
-    }
+    surface_type& get_surface();
 
     int handle() const
     {

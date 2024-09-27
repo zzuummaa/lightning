@@ -11,7 +11,9 @@ namespace lightning
 template <typename _value>
 struct gl_mutable_state
 {
-    struct dummy_value{};
+    struct dummy_value
+    {
+    };
 
     struct data
     {

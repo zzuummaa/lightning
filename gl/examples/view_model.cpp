@@ -40,8 +40,7 @@ int main(int argc, char** argv)
         "View model example",
         context
     );
-
-    window_surface(context);
+    window.set_surface(window_surface);
 
     gl_loop::poll();
 }

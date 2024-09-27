@@ -1,6 +1,7 @@
-#include <lightning/gl_window.h>
-#include <lightning/gl_context.h>
+#include <iostream>
 #include <lightning/exception.h>
+#include <lightning/gl_context.h>
+#include <lightning/gl_window.h>
 
 #include <lightning/opengl/glut.h>
 
@@ -23,8 +24,10 @@ void gl_window::on_display()
     int handle = expect(glutGetWindow(), 0, std::greater{});
     gl_window* window = expect(windows.find(handle), std::end(windows), std::not_equal_to{})->second;
 
-    // TODO paint surface
-
+    if (window->surface_)
+    {
+        window->surface_(window->context_);
+    }
 }
 
 gl_window::gl_window(
@@ -45,5 +48,9 @@ gl_window::~gl_window()
     glutDestroyWindow(handle_);
     expect(windows.erase(handle_), 1);
 }
+
+void gl_window::set_surface(const surface_type& surface) { surface_ = surface; }
+
+gl_window::surface_type& gl_window::get_surface() { return surface_; }
 
 } // namespace lightning
