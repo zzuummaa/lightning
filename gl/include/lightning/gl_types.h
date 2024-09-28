@@ -5,6 +5,12 @@
 namespace lightning
 {
 
+struct gl_context;
+struct gl_window;
+
+using gl_window_handle = void*;
+using gl_app_handle = void*;
+
 struct gl_size
 {
     int width;

@@ -1,35 +1,25 @@
 #pragma once
 
 #include <lightning/gl_types.h>
+#include <lightning/gl_object.h>
 
 namespace lightning
 {
 
 void gl_init(int* argc, char** argv);
 
-struct gl_context;
-
-struct gl_window
+struct gl_window : gl_object
 {
-    using surface_type = std::function<void(gl_context&)>;
+    gl_window(gl_context& context, const gl_rect& dims, const char* title);
 
-    gl_window(const gl_rect& dims, const char* title, gl_context& context);
+    gl_window(const gl_window&) = delete;
 
-    ~gl_window();
-
-    void set_surface(const surface_type& surface);
-
-    surface_type& get_surface();
-
-    int handle() const
-    {
-        return handle_;
-    }
+    void operator()();
 
 private:
-    int handle_;
-    gl_context& context_;
-    surface_type surface_;
+    gl_rect dims_;
+    std::string title_;
+    gl_window_handle handle_;
 
     static void on_display();
 };

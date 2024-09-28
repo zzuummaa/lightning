@@ -23,10 +23,10 @@ int main()
     auto task = periodic_printer(context);
 
     // Waiting for delay timeout elapsed, do second print
-    context.poll(3000);
+    context.run_for(3000);
 
     // Waiting for delay timeout elapsed, do third print
-    context.poll(3000);
+    context.run_for(3000);
 
     return 0;
 }

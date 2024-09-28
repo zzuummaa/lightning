@@ -44,7 +44,7 @@ void io_context::register_handle(int handle, std::coroutine_handle<> coro_handle
     expect(callbacks.try_emplace(handle, coro_handle).second);
 }
 
- void io_context::poll(int timeout_ms)
+ void io_context::run_for(int timeout_ms)
 {
     int count = expect_posix_ok(::epoll_wait(impl_->handle_, impl_->events_.data(), impl_->events_.size(), timeout_ms));
     for (int i = 0; i < count; ++i)

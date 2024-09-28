@@ -21,7 +21,7 @@ struct io_context
 
     void register_handle(int handle, std::coroutine_handle<> coro_handle);
 
-    void poll(int timeout_ms);
+    void run_for(int timeout_ms);
 
 private:
     struct pimpl;
