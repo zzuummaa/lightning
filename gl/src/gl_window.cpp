@@ -5,27 +5,31 @@
 namespace lightning
 {
 
-gl_window::gl_window(
-    gl_context& context, const gl_rect& dims, const char* title)
-    : gl_object(context), dims_(dims), title_(title)
+gl_window::gl_window(gl_window_settings&& settings, gl_context& context)
+    : gl_object(context), settings_(std::move(settings)), handle_(nullptr)
 {
 }
 
-void gl_window::operator()()
+gl_window::~gl_window()
 {
-    // Get current coroutine from context
-    // Add window to coroutine storage
+    if (handle_)
+    {
+        g_object_unref(handle_);
+    }
+}
 
+void gl_window::operator()(surface_type surface)
+{
     // Init window
-    GtkWidget* window  = gtk_window_new();
+    if (!handle_)
+    {
+        handle_ = gtk_window_new();
+    }
 
-    gtk_window_set_title(GTK_WINDOW(window), "Window");
-    gtk_window_set_default_size(GTK_WINDOW(window), dims_.size.width, dims_.size.height);
+    gtk_window_set_title(GTK_WINDOW(handle_), settings_.title.c_str());
+    gtk_window_set_default_size(GTK_WINDOW(handle_), settings_.dims.size.width, settings_.dims.size.height);
 
-    gtk_widget_show(window);
-
-    // Destroy window
-    // g_object_unref(window);
+    gtk_widget_show(GTK_WIDGET(handle_));
 }
 
 } // namespace lightning

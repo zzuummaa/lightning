@@ -2,37 +2,37 @@
 
 #include <lightning/gl_object.h>
 
-#include <memory>
-
 namespace lightning
 {
 
-struct gl_application
+struct gl_application : protected gl_object
 {
-    using surface_type = gl_object::surface_type;
-
-    explicit gl_application(const char* app_id, surface_type surface, gl_context& context);
+    template<typename ..._args>
+    friend std::unique_ptr<gl_application> make_gl_application(_args&& ...args);
 
     gl_application(const gl_application&) = delete;
-    gl_application(gl_application&&) = default;
 
     gl_app_handle handle()
     {
-        return state_->handle_;
+        return handle_;
     }
 
+protected:
+    explicit gl_application(const char* app_id, gl_context& context, surface_type surface);
+
+    gl_application(gl_application&&) = default;
+
 private:
-    struct app_state
-    {
-        ~app_state();
+    surface_type surface_;
+    gl_app_handle handle_;
 
-        gl_app_handle handle_;
-        gl_object object_;
-    };
-
-    std::unique_ptr<app_state> state_;
-
-    static void activate(gl_app_handle handle, app_state* context);
+    static void activate(gl_app_handle handle, gl_application* context);
 };
+
+template<typename ..._args>
+std::unique_ptr<gl_application> make_gl_application(_args&& ...args)
+{
+    return std::unique_ptr<gl_application>(new gl_application(std::forward<_args>(args)...));
+}
 
 } // namespace lightning

@@ -6,11 +6,6 @@
 namespace lightning
 {
 
-void gl_context::register_application(gl_application&& app)
-{
-    apps_.emplace(app.handle(), std::move(app));
-}
-
 void gl_context::run()
 {
     // **** begin g_application_run alternative ****
@@ -34,9 +29,9 @@ void gl_context::run()
     }
 
     // Main event loop
-    // TODO application_running = true;
+    application_running = true;
     int loop = 0;
-    while (/* application_running */ true)
+    while (application_running)
     {
         bool may_block = TRUE;
         // may_block = TRUE: g_main_context_iteration blocks execution if no events are coming
@@ -51,6 +46,11 @@ void gl_context::run()
         ;
     g_main_context_release(context);
     // **** end g_application_run alternative ****
+}
+
+void gl_context::shutdown()
+{
+    application_running = false;
 }
 
 } // namespace lightning

@@ -9,10 +9,10 @@ namespace lightning
 
 std::optional<std::string> backtrace();
 
-template<typename T, typename R, typename TComp = std::equal_to<T>>
+template<typename T, typename R, typename TComp = std::equal_to<std::remove_reference_t<T>>>
 T&& expect(T&& left, R&& right, TComp comp = {})
 {
-    if (comp(std::forward<T>(left), std::forward<T>(right))) return std::forward<T>(left);
+    if (comp(std::forward<T>(left), std::forward<R>(right))) return std::forward<T>(left);
 
     const auto bt = backtrace();
     throw std::runtime_error(bt ? *bt : "");

@@ -6,26 +6,17 @@
 namespace lightning
 {
 
-void gl_application::activate(gl_app_handle, app_state* state)
+void gl_application::activate(gl_app_handle, gl_application* app)
 {
-    state->object_();
+    (*app)(app->surface_);
 }
 
-gl_application::gl_application(const char* app_id, surface_type surface, gl_context& context)
+gl_application::gl_application(const char* app_id, gl_context& context, surface_type surface)
+    : gl_object(context), surface_(surface)
 {
-    auto handle = gtk_application_new(app_id, G_APPLICATION_DEFAULT_FLAGS);
-    expect(handle);
-
-    state_ = std::make_unique<app_state>(handle, gl_object(context, std::move(surface)));
-    g_signal_connect(handle, "activate", G_CALLBACK(activate), state_.get());
-}
-
-gl_application::app_state::~app_state()
-{
-    if (handle_)
-    {
-        g_object_unref(handle_);
-    }
+    handle_ = gtk_application_new(app_id, G_APPLICATION_DEFAULT_FLAGS);
+    expect(handle_);
+    g_signal_connect(handle_, "activate", G_CALLBACK(activate), this);
 }
 
 } // namespace lightning
