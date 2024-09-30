@@ -3,6 +3,8 @@ set(GTK_LIBRARIES PkgConfig::GTK4)
 
 add_library(lightning_gl
     src/gl_application.cpp
+    src/gl_box.cpp
+    src/gl_button.cpp
     src/gl_context.cpp
     src/gl_window.cpp
     src/gl_loop.cpp

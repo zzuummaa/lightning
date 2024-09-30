@@ -1,5 +1,6 @@
 #pragma once
 
+#include <lightning/exception.h>
 #include <lightning/gl_types.h>
 #include <lightning/gl_util.h>
 
@@ -10,23 +11,25 @@ namespace lightning
 
 struct gl_object_settings
 {
-    gl_object_settings() : is_durty_(true) {}
+    bool is_durty;
 
-    gl_object_settings(const gl_object_settings&) : is_durty_(true) {}
+    gl_object_settings() : is_durty(true) {}
 
-    gl_object_settings(gl_object_settings&&) noexcept : is_durty_(true) {}
+    gl_object_settings(const gl_object_settings&) : is_durty(true) {}
+
+    gl_object_settings(gl_object_settings&&) noexcept : is_durty(true) {}
 
     virtual ~gl_object_settings() = default;
 
     gl_object_settings& operator=(const gl_object_settings& other)
     {
-        is_durty_ = *this != other;
+        is_durty = *this != other;
         return *this;
     }
 
     gl_object_settings& operator=(gl_object_settings&& other) noexcept
     {
-        is_durty_ = *this != other;
+        is_durty = *this != other;
         return *this;
     }
 
@@ -34,18 +37,11 @@ struct gl_object_settings
     {
         return true;
     }
-
-    bool is_durty() const
-    {
-        return is_durty_;
-    }
-private:
-    bool is_durty_;
 };
 
 struct gl_object
 {
-    using surface_type = void(*)(gl_object&);
+    using surface_type = std::function<void(gl_object&)>;
 
     explicit gl_object(gl_context& context) : context_(context) {}
 
@@ -67,7 +63,7 @@ struct gl_object
         return *expect(dynamic_cast<_object*>(it->second.get()), nullptr, std::not_equal_to<>{});
     }
 
-    virtual void operator()(surface_type surface)
+    virtual void operator()(const surface_type& surface)
     {
         if (surface) surface(*this);
     }

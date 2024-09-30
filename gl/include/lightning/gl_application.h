@@ -12,7 +12,7 @@ struct gl_application : protected gl_object
 
     gl_application(const gl_application&) = delete;
 
-    gl_app_handle handle()
+    gl_object_handle handle()
     {
         return handle_;
     }
@@ -24,9 +24,9 @@ protected:
 
 private:
     surface_type surface_;
-    gl_app_handle handle_;
+    gl_object_handle handle_;
 
-    static void activate(gl_app_handle handle, gl_application* context);
+    static void activate(gl_object_handle handle, gl_application* context);
 };
 
 template<typename ..._args>

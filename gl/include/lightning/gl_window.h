@@ -36,11 +36,11 @@ struct gl_window : gl_object
 
     ~gl_window() override;
 
-    void operator()(surface_type surface) override;
+    void operator()(const surface_type& surface) override;
 
 private:
     gl_window_settings settings_;
-    gl_window_handle handle_;
+    gl_object_handle handle_;
 
     static void on_display();
 };

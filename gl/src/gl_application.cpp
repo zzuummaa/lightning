@@ -6,7 +6,7 @@
 namespace lightning
 {
 
-void gl_application::activate(gl_app_handle, gl_application* app)
+void gl_application::activate(gl_object_handle, gl_application* app)
 {
     (*app)(app->surface_);
 }

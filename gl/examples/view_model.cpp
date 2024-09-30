@@ -1,6 +1,8 @@
-#include <lightning/gl_types.h>
+#include <lightning/gl_box.h>
+#include <lightning/gl_button.h>
 #include <lightning/gl_context.h>
 #include <lightning/gl_mutable_state.h>
+#include <lightning/gl_types.h>
 #include <lightning/gl_window.h>
 
 using namespace lightning;
@@ -15,10 +17,24 @@ void window_surface(gl_object& context)
     // We should save show_rect object betwen function calls
     auto show_box = make_mutable_state(context, false);
 
-    gl_box box({ 0, 100, 100, 100 });
+    context.child<gl_box>(gl_box_settings(VERTICAL, 5))
+    ([](gl_object& context)
+    {
+
+    });
 
     // We should save button between function calls
-    gl_button button({0, 0, 100, 100}, [&show_box] { show_box = !show_box; });
+    context.child<gl_button>
+    (
+        gl_button_settings
+        (
+            "Switch",
+            { .size = { 100, 100 } },
+            [&show_box](){ show_box = !show_box; }
+        )
+    )([](gl_object& context)
+    {
+    });
 }
 
 void app_surface(gl_object& context)

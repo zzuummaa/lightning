@@ -18,7 +18,7 @@ gl_window::~gl_window()
     }
 }
 
-void gl_window::operator()(surface_type surface)
+void gl_window::operator()(const surface_type& surface)
 {
     // Init window
     if (!handle_)
@@ -26,10 +26,17 @@ void gl_window::operator()(surface_type surface)
         handle_ = gtk_window_new();
     }
 
-    gtk_window_set_title(GTK_WINDOW(handle_), settings_.title.c_str());
-    gtk_window_set_default_size(GTK_WINDOW(handle_), settings_.dims.size.width, settings_.dims.size.height);
+    if (settings_.is_durty)
+    {
+        gtk_window_set_title(GTK_WINDOW(handle_), settings_.title.c_str());
+        gtk_window_set_default_size(GTK_WINDOW(handle_), settings_.dims.size.width, settings_.dims.size.height);
 
-    gtk_widget_show(GTK_WIDGET(handle_));
+        gtk_widget_show(GTK_WIDGET(handle_));
+
+        settings_.is_durty = false;
+    }
+
+    surface(*this);
 }
 
 } // namespace lightning

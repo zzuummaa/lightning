@@ -52,7 +52,7 @@ struct gl_context
     void shutdown();
 
 private:
-    std::unordered_map<gl_app_handle, std::unique_ptr<gl_application>> apps_;
+    std::unordered_map<gl_object_handle, std::unique_ptr<gl_application>> apps_;
     std::unordered_map<std::source_location, gl_mutable_state<void>> mutable_states_;
 
     bool application_running = false;
