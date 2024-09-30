@@ -38,7 +38,7 @@ struct io_delay_awaitable
 
     void await_suspend(std::coroutine_handle<> h) noexcept
     {
-        context_.registerHandle(handle_, h);
+        context_.register_handle(handle_, h);
     }
 
     void await_resume() noexcept
